@@ -3,8 +3,14 @@ import React, { useContext } from 'react';
 import registerLottieData from '../../assets/lottie/register.json'
 import AuthContext from '../../context/AuthContext/AuthContext';
 import SocialLogin from '../shared/SocialLogin';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Register = () => {
+
+  const location = useLocation();
+    const navigate = useNavigate();
+    console.log('in register page', location)
+    const from = location.state || '/';
 
   const {createUser} = useContext(AuthContext);
 
@@ -15,9 +21,12 @@ const Register = () => {
         const password = form.password.value;
         console.log(email, password);
 
+         // password validation: 
+        // show password validation error
         createUser(email, password)
         .then(result => {
           console.log(result.user)
+          navigate(from);
         })
         .catch(error => {
           console.log(error.message)

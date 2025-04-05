@@ -3,27 +3,32 @@ import React, { useContext } from 'react';
 import loginLottieData from '../../assets/lottie/login.json';
 import AuthContext from '../../context/AuthContext/AuthContext';
 import SocialLogin from '../shared/SocialLogin';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
+  const { signInUser } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  console.log('in signIn page', location)
+  const from = location.state || '/';
 
-    const {signInUser} = useContext(AuthContext);
+  const handleSignIn = e => {
+      e.preventDefault();
+      const form = e.target;
+      const email = form.email.value;
+      const password = form.password.value;
+      console.log(email, password);
 
-    const handleSignIn = e => {
-        e.preventDefault();
-        const form = e.target;
-        const email = form.email.value;
-        const password = form.password.value;
-        console.log(email, password);
-      
-         signInUser(email, password)
-        .then(result => {
-          console.log('sign in', result.user)
-        })
-        .catch(error => {
-          console.log(error);
-        })
-       
-    }
+      signInUser(email, password)
+          .then(result => {
+              console.log('sign in', result.user)
+              navigate(from);
+          })
+          .catch(error => {
+              console.log(error);
+          })
+
+  }
 
 
 
